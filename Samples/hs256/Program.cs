@@ -21,7 +21,7 @@ namespace WebAPIApplication
                 .Build();
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5000")
+                .UseUrls("http://*:3010")
                 .UseConfiguration(config)
                 .UseStartup<Startup>();
         }

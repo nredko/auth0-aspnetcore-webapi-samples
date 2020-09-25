@@ -12,7 +12,7 @@ Update the `appsettings.json` with your Auth0 settings:
 {
   "Auth0": {
     "Domain": "Your Auth0 domain",
-    "ClientId": "Your Auth0 Client Id"
+    "ApiIdentifier": "Your Auth0 API Identifier"
   } 
 }
 ```

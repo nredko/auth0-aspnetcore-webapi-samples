@@ -12,4 +12,4 @@ RUN ["dotnet", "build"]
 
 EXPOSE 3010/tcp
 
-ENTRYPOINT ["dotnet", "run", "--server.urls", "http://0.0.0.0:3010"]
+ENTRYPOINT ["dotnet", "run"]

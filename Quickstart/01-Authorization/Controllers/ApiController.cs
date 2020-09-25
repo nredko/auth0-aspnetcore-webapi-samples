@@ -5,43 +5,49 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPIApplication.Controllers
 {
     [Route("api")]
-    [ApiController]
-    public class ApiController : ControllerBase
+    public class ApiController : Controller
     {
-        [HttpGet("public")]
+        [HttpGet]
+        [Route("public")]
         public IActionResult Public()
         {
-            return Ok(new
+            return Json(new
             {
                 Message = "Hello from a public endpoint! You don't need to be authenticated to see this."
             });
         }
 
-        [HttpGet("private")]
+        [HttpGet]
+        [Route("private")]
         [Authorize]
         public IActionResult Private()
         {
-            return Ok(new
+            return Json(new
             {
                 Message = "Hello from a private endpoint! You need to be authenticated to see this."
             });
         }
 
-        [HttpGet("private-scoped")]
+        [HttpGet]
+        [Route("private-scoped")]
         [Authorize("read:messages")]
         public IActionResult Scoped()
         {
-            return Ok(new
+            return Json(new
             {
                 Message = "Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this."
             });
         }
 
-        // This is a helper action. It allows you to easily view all the claims of the token.
+
+        /// <summary>
+        /// This is a helper action. It allows you to easily view all the claims of the token
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("claims")]
         public IActionResult Claims()
         {
-            return Ok(User.Claims.Select(c =>
+            return Json(User.Claims.Select(c =>
                 new
                 {
                     c.Type,

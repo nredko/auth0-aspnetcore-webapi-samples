@@ -46,9 +46,10 @@ Go to `http://localhost:3010/api/public` in Postman (or your web browser) to acc
 
 public void ConfigureServices(IServiceCollection services)
 {
-    // Leave any code your app/template already has here and just add the lines:
-    
-	var domain = $"https://{Configuration["Auth0:Domain"]}/";
+    // Add framework services.
+    services.AddMvc();
+
+    string domain = $"https://{Configuration["Auth0:Domain"]}/";
     services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,8 +70,25 @@ public void ConfigureServices(IServiceCollection services)
 
 public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 {
-    // Leave any code your app/template already has here and just add the line:
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Home/Error");
+    }
+
+    app.UseStaticFiles();
+
     app.UseAuthentication();
+
+    app.UseMvc(routes =>
+    {
+        routes.MapRoute(
+            name: "default",
+            template: "{controller=Home}/{action=Index}/{id?}");
+    });
 }
 ```
 
@@ -79,15 +97,15 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 ```csharp
 // /Controllers/ApiController.cs
 
-[Route("api/[controller]")]
-[ApiController]
-public class YourController : ControllerBase
+[Route("api")]
+public class ApiController : Controller
 {
     [HttpGet]
+    [Route("private")]
     [Authorize]
     public IActionResult Private()
     {
-        return Ok(new
+        return Json(new
         {
             Message = "Hello from a private endpoint! You need to be authenticated to see this."
         });
